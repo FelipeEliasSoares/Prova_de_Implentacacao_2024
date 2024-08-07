@@ -1,5 +1,8 @@
 # Uma imagem base do PHP com Apache
-FROM php:8.3-apache
+FROM php:7.4-apache
+
+# Remove o arquivo index.html padrão do Apache
+RUN rm -f /var/www/html/index.html
 
 # Copia o código fonte para o diretório padrão do Apache
 COPY src/ /var/www/html/

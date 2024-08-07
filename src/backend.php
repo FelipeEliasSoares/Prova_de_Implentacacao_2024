@@ -7,7 +7,14 @@ try {
     $pdo = new PDO("mysql:host={$config['host']};dbname={$config['db']};charset=utf8", $config['user'], $config['pass']);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    die("Erro de conexão: " . $e->getMessage());
+    echo json_encode(['success' => false, 'message' => "Erro de conexão: " . $e->getMessage()]);
+    exit; // Encerra o script após retornar o erro
+}
+
+// Verifica se a conexão está ativa
+if (!$pdo) {
+    echo json_encode(['success' => false, 'message' => 'Não foi possível conectar ao banco de dados.']);
+    exit; // Encerra o script
 }
 
 function isLoggedIn() {

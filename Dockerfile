@@ -1,17 +1,20 @@
 # Imagem base do PHP com Apache
 FROM php:8.3-apache
 
-# Atualiza os pacotes do sistema e instala o Apache (embora a imagem base já inclua o Apache)
-RUN apt-get update && apt-get install -y libzip-dev libpng-dev
+# Atualiza os pacotes do sistema e instala as dependências necessárias
+RUN apt-get update && apt-get install -y \
+    libzip-dev \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd mysqli pdo pdo_mysql
 
 # Remove o arquivo index.html padrão do Apache
 RUN rm -f /var/www/html/index.html
 
 # Copia o código fonte para o diretório padrão do Apache
 COPY src/ /var/www/html/
-
-# Instala as extensões mysqli e pdo_mysql do PHP
-RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 # Define a memória máxima para o PHP
 RUN echo "memory_limit=256M" > /usr/local/etc/php/conf.d/memory-limit.ini

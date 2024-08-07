@@ -19,8 +19,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: senha_da_nasa
       MYSQL_DATABASE: biblioteca
-      MYSQL_USER: root
-      MYSQL_PASSWORD: senha_da_nasa
     deploy:
       resources:
         limits:

@@ -2,7 +2,7 @@
 $config = [
     'host' => 'db',
     'db' => 'biblioteca',
-    'user' => 'admin',
+    'user' => 'root',
     'pass' => 'senha_da_nasa'
 ];
 ?>

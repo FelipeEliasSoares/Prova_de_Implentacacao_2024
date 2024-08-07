@@ -1,42 +1,49 @@
-version: '3.8'
 
 services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  webserver:
+    build: .
     ports:
-      - "8080:80"
+      - "8083:80"
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - db
     deploy:
       resources:
         limits:
+          cpus: '1.0'
           memory: 300M
-          cpus: '0.1' # 1 core
 
   db:
-    image: mysql:8.0
+    image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: biblioteca # Certifique-se de que este nome está correto
+      MYSQL_ROOT_PASSWORD: senha_da_nasa_root
+      MYSQL_DATABASE: biblioteca
       MYSQL_USER: user
-      MYSQL_PASSWORD: senha_da_nasa # Deve ser a mesma senha que você usar no PHP
+      MYSQL_PASSWORD: senha_da_nasa
     volumes:
-      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql # Mapeando seu arquivo init.sql
-    ports:
-      - "3306:3306"
+      - dbdata:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     deploy:
       resources:
         limits:
+          cpus: '1.0'
           memory: 500M
-          cpus: '0.1' # 1 core
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     ports:
-      - "8081:80"
+      - "8080:80"
     environment:
-      PMA_HOST: db # Nome do serviço do MySQL
-      PMA_USER: user # Altere para o usuário se necessário
-      PMA_PASSWORD: senha_da_nasa # Senha correspondente
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: senha_da_nasa_root
     depends_on:
       - db
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'
+          memory: 200M
+
+volumes:
+  dbdata:

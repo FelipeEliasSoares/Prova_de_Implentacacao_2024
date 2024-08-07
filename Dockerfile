@@ -1,16 +1,14 @@
-# Usando a imagem oficial do PHP 8.3 com Apache
-FROM php:8.3-apache
+# Use a imagem base do PHP com Apache
+FROM php:7.4-apache
 
-# Instalar extensões necessárias
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+# Instale extensões PHP necessárias
+RUN docker-php-ext-install pdo pdo_mysql
 
-# Configurar o diretório de trabalho
-WORKDIR /var/www/html
+# Copie os arquivos da pasta src para o diretório padrão do Apache
+COPY src/ /var/www/html/
 
-COPY ./src /var/www/html 
-
-# Definir permissões apropriadas
+# Ajuste as permissões dos arquivos
 RUN chown -R www-data:www-data /var/www/html
 
-# Expor a porta 80
+# Configure o Apache para escutar na porta 80 (padrão)
 EXPOSE 80

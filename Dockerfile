@@ -14,5 +14,5 @@ COPY src/ /var/www/html/
 # Expondo a porta 80
 EXPOSE 80
 
-# Define o comando de inicialização do Apache
-CMD ["apache2-foreground"]
+CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+

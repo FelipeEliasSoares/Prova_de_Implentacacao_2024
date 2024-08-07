@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biblioteca Virtual</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-book icon"></i> Biblioteca Virtual</h1>
+    </header>
+
+    <div class="container">
+        <div id="authButtons">
+            <button id="showLoginButton"><i class="fas fa-sign-in-alt icon"></i> Login</button>
+            <button id="showRegisterButton"><i class="fas fa-user-plus icon"></i> Cadastro</button>
+        </div>
+
+        <div id="loggedInContent" class="hidden">
+            <button id="logoutButton"><i class="fas fa-sign-out-alt icon"></i> Sair</button>
+            <button id="addBookButton"><i class="fas fa-plus-circle icon"></i> Adicionar Livro</button>
+
+            <div id="bookList" class="card">
+                <h2><i class="fas fa-list icon"></i> Lista de Livros</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Título</th>
+                            <th>Autor</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bookListBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Login -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2><i class="fas fa-sign-in-alt icon"></i> Login</h2>
+            <form id="loginForm">
+                <input type="text" name="username" placeholder="Usuário" required>
+                <input type="password" name="password" placeholder="Senha" required>
+                <button type="submit"><i class="fas fa-lock icon"></i> Entrar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Registro -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2><i class="fas fa-user-plus icon"></i> Cadastro</h2>
+            <form id="registerForm">
+                <input type="text" name="username" placeholder="Usuário" required>
+                <input type="password" name="password" placeholder="Senha" required>
+                <button type="submit"><i class="fas fa-user-check icon"></i> Cadastrar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Adicionar/Editar Livro -->
+    <div id="bookModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="bookModalTitle"><i class="fas fa-book icon"></i> Adicionar Livro</h2>
+            <form id="bookForm">
+                <input type="hidden" name="id" id="bookId">
+                <input type="text" name="title" placeholder="Título" required>
+                <input type="text" name="author" placeholder="Autor" required>
+                <button type="submit"><i class="fas fa-save icon"></i> Salvar Livro</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

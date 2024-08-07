@@ -1,0 +1,48 @@
+
+version: '1.0'
+
+services:
+  web:
+    build: .
+    ports:
+      - "80:80"
+    deploy:
+      resources:
+        limits:
+          memory: 300M
+          cpus: "1.0"
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: senha_da_nasa
+      MYSQL_DATABASE: biblioteca
+      MYSQL_USER: root
+      MYSQL_PASSWORD: senha_da_nasa
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+          cpus: "1.0"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: senha_da_nasa
+    ports:
+      - "8080:80"
+    deploy:
+      resources:
+        limits:
+          memory: 200M
+          cpus: "4.0"
+
+volumes:
+  db_data:

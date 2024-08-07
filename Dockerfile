@@ -1,16 +1,8 @@
-# Use uma imagem base do PHP com Apache
-FROM php:7.4-apache
+# Imagem base do PHP com Apache
+FROM php:8.3-apache
 
-# Atualize os pacotes e instale utilitários necessários
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd \
-    && docker-php-ext-install mysqli \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Atualiza os pacotes do sistema e instala o Apache (embora a imagem base já inclua o Apache)
+RUN apt-get update && apt-get install -y apache2
 
 # Remove o arquivo index.html padrão do Apache
 RUN rm -f /var/www/html/index.html
@@ -18,23 +10,20 @@ RUN rm -f /var/www/html/index.html
 # Copia o código fonte para o diretório padrão do Apache
 COPY src/ /var/www/html/
 
+# Instala a extensão mysqli do PHP
+RUN docker-php-ext-install mysqli
+
 # Define a memória máxima para o PHP
 RUN echo "memory_limit=256M" > /usr/local/etc/php/conf.d/memory-limit.ini
 
-# Ative o mod_rewrite do Apache
+# Habilita o mod_rewrite do Apache (caso seja necessário para reescrita de URLs)
 RUN a2enmod rewrite
 
-# Defina o DocumentRoot e configure o Apache
-RUN echo "<Directory /var/www/html/> \
-    Options Indexes FollowSymLinks \
-    AllowOverride All \
-    Require all granted \
-    </Directory>" > /etc/apache2/conf-available/docker-php.conf
+# Define o diretório de trabalho
+WORKDIR /var/www/html
 
-RUN a2enconf docker-php
-
-# Exponha a porta 80 para o Apache
+# Expondo a porta 80
 EXPOSE 80
 
-# Inicie o serviço do Apache
+# Define o comando de inicialização do Apache
 CMD ["apache2-foreground"]

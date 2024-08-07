@@ -1,6 +1,6 @@
 <?php
 $servername = "db"; // Nome do serviço do MySQL definido no docker-compose
-$username = "root"; // Usuário do MySQL
+$username = "user"; // Usuário do MySQL
 $password = "senha_da_nasa"; // Senha do MySQL
 $dbname = "biblioteca"; // Nome do banco de dados
 

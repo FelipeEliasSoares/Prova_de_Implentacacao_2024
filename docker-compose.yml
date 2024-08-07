@@ -1,64 +1,42 @@
+version: '3.8'
 
 services:
   web:
-    build: .
-    ports:
-      - "80:80"
-    deploy:
-      resources:
-        limits:
-          memory: 300M
-          cpus: "1.0"
-    depends_on:
-      - db
-    networks:
-      - my_network
-    restart: always
-
-  db:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: senha_da_nasa
-      MYSQL_DATABASE: biblioteca
-    deploy:
-      resources:
-        limits:
-          memory: 500M
-          cpus: "1.0"
-    volumes:
-      - db_data:/var/lib/mysql
-      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
-    networks:
-      - my_network
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-psenha_da_nasa"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-    restart: always
-
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    environment:
-      PMA_HOST: db
-      MYSQL_ROOT_PASSWORD: senha_da_nasa
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8080:80"
     deploy:
       resources:
         limits:
-          memory: 200M
-          cpus: "0.5"
-        reservations:
-          cpus: "0.25"
+          memory: 300M
+          cpus: '0.1' # 1 core
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: biblioteca # Certifique-se de que este nome está correto
+      MYSQL_USER: user
+      MYSQL_PASSWORD: senha_da_nasa # Deve ser a mesma senha que você usar no PHP
+    volumes:
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql # Mapeando seu arquivo init.sql
+    ports:
+      - "3306:3306"
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+          cpus: '0.1' # 1 core
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db # Nome do serviço do MySQL
+      PMA_USER: user # Altere para o usuário se necessário
+      PMA_PASSWORD: senha_da_nasa # Senha correspondente
     depends_on:
       - db
-    networks:
-      - my_network
-    restart: always
-
-volumes:
-  db_data:
-
-networks:
-  my_network:

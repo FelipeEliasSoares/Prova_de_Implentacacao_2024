@@ -1,18 +1,20 @@
-# Imagem base do PHP com Apache
-FROM ubuntu
-LABEL maintainer="FelipeEliasSoares"
+# Usando a imagem oficial do PHP 8.3 com Apache
+FROM php:8.3-apache
 
-# Atualiza os pacotes do sistema e instala as dependências necessárias
-RUN apt-get update && apt-get install -y apache2 libapache2-mod-php8.3 php8.3 php8.3-mysql
+# Instalar extensões necessárias
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Remove o arquivo index.html padrão do Apache
-RUN rm -f /var/www/html/index.html
+# Configurar o diretório de trabalho
+WORKDIR /var/www/html
 
-# Copia o código fonte para o diretório padrão do Apache
-COPY src/ /var/www/html/
+# Remover o index.html padrão do Apache
+RUN rm /var/www/html/index.html
 
-# Expondo a porta 80
+# Copiar os arquivos do projeto
+COPY ./src /var/www/html 
+
+# Definir permissões apropriadas
+RUN chown -R www-data:www-data /var/www/html
+
+# Expor a porta 80
 EXPOSE 80
-
-CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
-

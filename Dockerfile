@@ -11,15 +11,6 @@ RUN rm -f /var/www/html/index.html
 # Copia o código fonte para o diretório padrão do Apache
 COPY src/ /var/www/html/
 
-# Define a memória máxima para o PHP
-RUN echo "memory_limit=256M" > /usr/local/etc/php/conf.d/memory-limit.ini
-
-# Habilita o mod_rewrite do Apache (caso seja necessário para reescrita de URLs)
-RUN a2enmod rewrite
-
-# Define o diretório de trabalho
-WORKDIR /var/www/html
-
 # Expondo a porta 80
 EXPOSE 80
 

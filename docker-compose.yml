@@ -1,6 +1,4 @@
 
-version: '3.8'
-
 services:
   web:
     build: .
@@ -10,7 +8,7 @@ services:
       resources:
         limits:
           memory: 300M
-          cpus: "1.0"
+          cpus: "1.0"  
     depends_on:
       - db
 
@@ -25,11 +23,10 @@ services:
       resources:
         limits:
           memory: 500M
-          cpus: "1.0"
+          cpus: "1.0"  
     volumes:
       - db_data:/var/lib/mysql
       - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
-
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -42,7 +39,9 @@ services:
       resources:
         limits:
           memory: 200M
-          cpus: "4.0"
+          cpus: "0.5"  
+        reservations:
+          cpus: "0.25"  
 
 volumes:
   db_data:

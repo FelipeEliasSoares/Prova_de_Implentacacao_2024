@@ -1,3 +1,4 @@
+version: '3.8'
 
 services:
   webserver:
@@ -5,7 +6,12 @@ services:
     ports:
       - "80:80"
     volumes:
-      - src:/var/www/html
+      - ./src:/var/www/html
+    environment:
+      DB_HOST: db
+      DB_DATABASE: biblioteca
+      DB_USERNAME: crud_user
+      DB_PASSWORD: senha_da_nasa
     depends_on:
       - db
     deploy:
@@ -15,11 +21,11 @@ services:
           memory: 300M
 
   db:
-    image: mysql:8.0
+    image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: senha_da_nasa_root
       MYSQL_DATABASE: biblioteca
-      MYSQL_USER: user
+      MYSQL_USER: crud_user
       MYSQL_PASSWORD: senha_da_nasa
     volumes:
       - dbdata:/var/lib/mysql
@@ -33,7 +39,7 @@ services:
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     ports:
-      - "8080:80"
+      - "8081:80"
     environment:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: senha_da_nasa_root
@@ -42,8 +48,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '1.0'
+          cpus: '0.5'
           memory: 200M
 
 volumes:
-  dbdata:
+  dbdata:

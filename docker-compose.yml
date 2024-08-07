@@ -1,3 +1,4 @@
+version: '3.8'
 
 services:
   web:
@@ -44,6 +45,8 @@ services:
           cpus: "0.5"
         reservations:
           cpus: "0.25"
+    depends_on:
+      - db
     networks:
       - my_network
 

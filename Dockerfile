@@ -1,14 +1,9 @@
 # Imagem base do PHP com Apache
-FROM php:8.3-apache
+FROM ubuntu
+LABEL maintainer="FelipeEliasSoares"
 
 # Atualiza os pacotes do sistema e instala as dependências necessárias
-RUN apt-get update && apt-get install -y \
-    libzip-dev \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd mysqli pdo pdo_mysql
+RUN apt-get update && apt-get install -y apache2 libapache2-mod-php8.3 php8.3 php8.3-mysql
 
 # Remove o arquivo index.html padrão do Apache
 RUN rm -f /var/www/html/index.html

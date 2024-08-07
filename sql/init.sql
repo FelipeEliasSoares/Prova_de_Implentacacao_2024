@@ -28,3 +28,8 @@ INSERT INTO books (title, author) VALUES
 ('Cem Anos de Solidão', 'Gabriel García Márquez'),
 ('O Pequeno Príncipe', 'Antoine de Saint-Exupéry'),
 ('Crime e Castigo', 'Fiódor Dostoiévski');
+
+-- Criação de um usuário SQL para a aplicação
+CREATE USER IF NOT EXISTS 'crud_user'@'%' IDENTIFIED BY 'senha_da_nasa';
+GRANT ALL PRIVILEGES ON biblioteca.* TO 'crud_user'@'%';
+FLUSH PRIVILEGES;

@@ -7,10 +7,6 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql
 # Configurar o diretório de trabalho
 WORKDIR /var/www/html
 
-# Remover o index.html padrão do Apache
-RUN rm /var/www/html/index.html
-
-# Copiar os arquivos do projeto
 COPY ./src /var/www/html 
 
 # Definir permissões apropriadas

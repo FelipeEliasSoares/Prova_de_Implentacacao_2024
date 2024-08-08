@@ -1,4 +1,4 @@
-version: '3.8'
+
 
 services:
   webserver:
@@ -13,15 +13,17 @@ services:
       DB_USERNAME: crud_user
       DB_PASSWORD: senha_da_nasa
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     deploy:
       resources:
         limits:
           cpus: '1.0'
           memory: 300M
+    entrypoint: sh -c "sleep 30 && apache2-foreground" # Espera 30 segundos antes de iniciar o Apache
 
   db:
-    image: mysql:5.7
+    image: mysql:8.0
     environment:
       MYSQL_ROOT_PASSWORD: senha_da_nasa_root
       MYSQL_DATABASE: biblioteca
@@ -35,6 +37,12 @@ services:
         limits:
           cpus: '1.0'
           memory: 500M
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
@@ -44,7 +52,8 @@ services:
       PMA_HOST: db
       MYSQL_ROOT_PASSWORD: senha_da_nasa_root
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     deploy:
       resources:
         limits:

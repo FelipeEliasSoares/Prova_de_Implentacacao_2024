@@ -1,14 +1,18 @@
 <?php
 session_start();
 
-include 'config.php';
+$servername = "db";
+$username = "crud_user";
+$password = "senha_da_nasa";
+$database = "biblioteca";
 
 try {
-    $pdo = new PDO("mysql:host={$config['host']};dbname={$config['db']};charset=utf8", $config['user'], $config['pass']);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    echo json_encode(['success' => false, 'message' => "Erro de conexão: " . $e->getMessage()]);
-    exit; // Encerra o script após retornar o erro
+    $conn = new PDO("mysql:host=$servername;dbname=$database", $username, $password);
+    // Configurar o PDO para lançar exceções em caso de erro
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo "Conexão bem-sucedida";
+} catch(PDOException $e) {
+    echo "Erro na conexão: " . $e->getMessage();
 }
 
 // Verifica se a conexão está ativa

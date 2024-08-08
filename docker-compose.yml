@@ -57,7 +57,7 @@ services:
     deploy:
       resources:
         limits:
-          cpus: '0.5'
+          cpus: '4.0'
           memory: 200M
 
 volumes:

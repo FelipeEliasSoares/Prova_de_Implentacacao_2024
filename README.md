@@ -8,13 +8,13 @@
 ### Passo 1: Clonar o repositório
 Clone este repositório para a sua máquina local.
 
-    git clone https://github.com/seu-usuario/seu-repositorio.git
-    cd seu-repositorio
+    git clone https://github.com/FelipeEliasSoares/Prova_de_Implentacacao_2024.git
+    cd Prova_de_Implentacacao_2024
 
 ### Passo 2: Construir e iniciar os contêineres
 Use o Docker Compose para construir e iniciar os contêineres.
 
-    docker-compose up --build -d
+    docker-compose up -d
 
 Este comando irá:
 

@@ -61,8 +61,6 @@ function showLoggedOutContent() {
     showRegisterButton.style.display = 'block';
 }
 
-
-
 async function checkAuth() {
     try {
         const response = await fetch('backend.php?action=checkAuth');
@@ -73,7 +71,7 @@ async function checkAuth() {
             showLoggedOutContent();
         }
     } catch (error) {
-        console.error('Erro ao verificar autenticação:', error);
+        displayError('Erro ao verificar autenticação:', error);
     }
 }
 
@@ -103,7 +101,7 @@ async function loadBooks() {
             bookListBody.appendChild(row);
         });
     } catch (error) {
-        console.error('Erro ao carregar livros:', error);
+        displayError('Erro ao carregar livros:', error);
     }
 }
 
@@ -120,7 +118,7 @@ loginForm.addEventListener('submit', async function(e) {
             await showLoggedInContent();
         }
     } catch (error) {
-        console.error('Erro ao fazer login:', error);
+        displayError('Erro ao fazer login:', error);
     }
 });
 
@@ -139,7 +137,7 @@ registerForm.addEventListener('submit', async function(e) {
             openModal(loginModal);
         }
     } catch (error) {
-        alert('Usuario ja cadastrado', error);
+        displayError('Erro ao registrar usuário:', error);
     }
 });
 
@@ -157,7 +155,7 @@ bookForm.addEventListener('submit', async function(e) {
             await loadBooks();
         }
     } catch (error) {
-        console.error('Erro ao salvar livro:', error);
+        displayError('Erro ao salvar livro:', error);
     }
 });
 
@@ -171,7 +169,7 @@ logoutButton.addEventListener('click', async function() {
         alert(data.message);
         showLoggedOutContent();
     } catch (error) {
-        console.error('Erro ao fazer logout:', error);
+        displayError('Erro ao fazer logout:', error);
     }
 });
 
@@ -196,9 +194,17 @@ async function deleteBook(id) {
                 await loadBooks();
             }
         } catch (error) {
-            console.error('Erro ao excluir livro:', error);
+            displayError('Erro ao excluir livro:', error);
         }
     }
+}
+
+// Função para exibir erros
+function displayError(message, error) {
+    const errorMessage = `${message} ${error.message ? error.message : ''}`;
+    const errorContainer = document.getElementById('errorContainer');
+    errorContainer.innerText = errorMessage;
+    errorContainer.style.display = 'block';
 }
 
 // Verificar autenticação ao carregar a página
